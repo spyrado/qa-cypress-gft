@@ -3,6 +3,6 @@ describe('Acessar site e validar texto de apresentação', () => {
     cy.visit('http://agapito-server.herokuapp.com/');
   });
   it('validar texto', () => {
-    cy.contains('Este é o site do Prof');
+    cy.contains('Este é o sitef do Prof');
   });
 });
