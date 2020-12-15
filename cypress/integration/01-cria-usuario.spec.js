@@ -1,4 +1,4 @@
-describe('Cria um usuário', () => {
+describe('Criar um usuário', () => {
   it('Acessa o site', () => {
     cy.visit('http://agapito-server.herokuapp.com/');
   });
@@ -10,12 +10,13 @@ describe('Cria um usuário', () => {
       .should('include', '/users');
   });
   it('Entra na pagina de criação de usuário', () => {
+    cy.get("#btn-new").should('be.visible');
     cy.get("#btn-new").click();
     cy.url()
       .should('include', '/users/new');
   });
   it('Preenche o formulário', () => {
-    cy.fixture('usuario/novoUsuario')
+    cy.fixture('user/newUser')
       .then(novoUsuario => {
         cy.get("#user_login") 
           .type(novoUsuario.login);
@@ -36,34 +37,13 @@ describe('Cria um usuário', () => {
 
 describe('Recupera as informações do usuário cadastrado', () => {
   it('Pega as informações que foram cadastradas na tela', () => {
-    const user = {
-      codigo: null,
-      login: null,
-      full_name: null,
-      email: null,
-      age: null,
-    };
     cy.get('#codigo').should('not.be.null');
-    cy.get('#codigo').then(function($el) {
-      user.codigo = $el.text();
-      cy.log(user.codigo);
+    cy.get('#codigo').then(($el) => {
+      cy.log($el.text());
+      cy.readFile('cypress/fixtures/user/newUser.json').then(user => {
+        const { age, email, full_name, login } = user;
+        cy.writeFile('cypress/fixtures/user/getUser.json', { codigo: $el.text(), age, email, full_name, login}).then(() => {});
+      });
     });
-    cy.get('#login').then(($el) => {
-      user.login = $el.text();
-    });
-    cy.get('#full_name').then(($el) => {
-      user.full_name = $el.text();
-    });
-    cy.get('#email').then(($el) => {
-      user.email = $el.text();
-    });
-    cy.get('#age').then(($el) => {
-      user.age = $el.text();
-    });
-    cy.log(user.codigo);
-    cy.log(user.login);
-    cy.log(user.full_name);
-    cy.log(user.email);
-    cy.log(user.age);
   });
 });
