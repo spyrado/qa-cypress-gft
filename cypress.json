@@ -1,5 +1,5 @@
 {
   "baseUrl": null,
   "chromeWebSecurity": false,
-  "execTimeout": 600000
+  "defaultCommandTimeout": 20000
 }
